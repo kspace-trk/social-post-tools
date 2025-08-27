@@ -1,0 +1,30 @@
+@use "sass:map";
+
+// Font sizes
+$font-size-xxs: 0.7rem;
+$font-size-xs: 0.8rem;
+$font-size-sm: 0.9rem;
+$font-size-regular: 1rem;
+$font-size-md: 1.5rem;
+$font-size-lg: 2rem;
+
+$breakpoint_sm: 428px;
+$breakpoint_md: 768px;
+$breakpoint_lg: 960px;
+$breakpoint_xl: 1280px;
+$breakpoint_xxl: 1920px;
+
+
+$breakpoints: (
+  "sm": "screen and (max-width: #{$breakpoint_sm})",
+  "md": "screen and (max-width: #{$breakpoint_md})",
+  "lg": "screen and (max-width: #{$breakpoint_lg})",
+  "xl": "screen and (max-width: #{$breakpoint_xl})",
+  "xxl": "screen and (min-width: #{$breakpoint_xxl})",
+) !default;
+
+@mixin mq($breakpoint) {
+  @media #{map.get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}

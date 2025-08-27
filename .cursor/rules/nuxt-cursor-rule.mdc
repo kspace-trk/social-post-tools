@@ -1,0 +1,27 @@
+---
+description: NuxtでフルスタックWebアプリケーションを開発する際に使用するcursor ruleです。
+globs: 
+alwaysApply: false
+---
+## ディレクトリ構成について
+一般的なNuxt3アプリケーションは、pagesやcomponents、composablesがプロジェクトルートに配置されています。
+しかしNuxt4の場合は、serverとappの2つに分かれています。
+現在がどのようなディレクトリ構成になってるかを把握した上で、ファイルに変更を加えてください。
+
+## DB操作のロジックを作成するとき
+db操作をする際、drizzle-ormを使用します。
+drizzle-ormを使用するのは、server/models配下のTypeScriptファイルのみにしてください。
+APIエンドポイントのロジックや、utilsの中でdrizzleクエリを書くのはやめてください。
+
+また、models配下にロジックを作成したり編集したりした場合は、tests/server/models配下のテストも対応するようにしてください。
+
+## APIエンドポイントを作成する時
+APIエンドポイントは、server/api配下にtypescirptファイルを配置します。
+GET APIエンドポイントの場合は、filename.get.tsのように、拡張子にHTTPメソッドを記載します。
+基本的には、endpointname/index.get.tsのように、ディレクトリをAPIエンドポイント名にしてください。
+
+## pagesやcomponentsを作成する時
+pagesやcomponentsのvueファイルを作成する際、ロジックはなるべくcomposablesに切り出すようにしてください。
+
+## fetch関数を使用する場合
+fetch関数を使用する場合、fetchではなく$fetch関数を使用するようにしてください。
