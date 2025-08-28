@@ -7,7 +7,7 @@ const menuItems: SideHeaderMenuItem[] = [
   {
     path: '/',
     label: 'ホーム',
-    icon: 'pi pi-home',
+    icon: 'mdi:home',
   },
 ];
 
