@@ -9,8 +9,6 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
-  css: ['~/assets/css/reset.css'],
-
   future: {
     compatibilityVersion: 4,
   },
@@ -22,7 +20,6 @@ export default defineNuxtConfig({
       preprocessorOptions: {
         scss: {
           additionalData: '@use "~/assets/scss/variables.scss" as *;',
-          api: 'modern-compiler',
         },
       },
     },
