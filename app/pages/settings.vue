@@ -50,7 +50,7 @@ import { InputField, MainButton, SectionTextWithLine, TextareaField, TextItem } 
           />
         </div>
       </div>
-      <div class="translate-post-setting">
+      <div class="translate-setting">
         <SectionTextWithLine
           text="翻訳設定"
           class="section-text"
@@ -79,6 +79,30 @@ import { InputField, MainButton, SectionTextWithLine, TextareaField, TextItem } 
           />
         </div>
       </div>
+      <div class="guideline-check-setting">
+        <SectionTextWithLine
+          text="文言チェック設定"
+          class="section-text"
+        />
+        <InputField
+          v-model="text"
+          class="reference-post-input"
+          label="ルール"
+        />
+        <div class="button-container">
+          <MainButton text="追加" />
+        </div>
+        <div class="reference-post-list">
+          <p class="reference-post-list-title">
+            登録済み
+          </p>
+          <TextItem
+            text="ハッシュタグに #vuefes を設定"
+            show-close-icon
+            class="reference-post-item"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -96,6 +120,7 @@ import { InputField, MainButton, SectionTextWithLine, TextareaField, TextItem } 
   max-width: 680px;
   width: 100%;
   padding: 0 16px;
+  margin-bottom: 160px;
 }
 
 .generate-post-setting {
