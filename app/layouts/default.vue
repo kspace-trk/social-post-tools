@@ -27,7 +27,7 @@ const route = useRoute();
 <template>
   <div id="default-layout">
     <SideHeader
-      logo-text="ロゴテキスト"
+      logo-text="social-post-tools"
       :menu-items="menuItems"
       :current-path="route.path"
     />
