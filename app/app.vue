@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import 'admin-ui-components/styles';
 </script>
 
 <template>

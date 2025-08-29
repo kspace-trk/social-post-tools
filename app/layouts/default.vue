@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { SideHeader, TopHeader, type SideHeaderMenuItem } from 'admin-ui-components';
-import 'admin-ui-components/styles';
 import { useRoute } from '#app';
 
 const menuItems: SideHeaderMenuItem[] = [
