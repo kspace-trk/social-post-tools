@@ -20,6 +20,12 @@ const menuItems: SideHeaderMenuItem[] = [
   },
 ];
 
+const bottomMenuItem: SideHeaderMenuItem = {
+  path: '/settings',
+  label: '設定',
+  icon: 'carbon:settings',
+};
+
 const route = useRoute();
 </script>
 
@@ -29,6 +35,7 @@ const route = useRoute();
       logo-text="social-post-tools"
       :menu-items="menuItems"
       :current-path="route.path"
+      :bottom-menu-item="bottomMenuItem"
     />
     <div class="main-content">
       <TopHeader title="ヘッダー名" />
