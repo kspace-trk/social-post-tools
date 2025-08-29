@@ -6,8 +6,18 @@ import { useRoute } from '#app';
 const menuItems: SideHeaderMenuItem[] = [
   {
     path: '/',
-    label: 'ホーム',
-    icon: 'mdi:home',
+    label: '投稿文生成',
+    icon: 'majesticons:text-line',
+  },
+  {
+    path: '/translate',
+    label: '翻訳',
+    icon: 'fluent:translate-auto-16-regular',
+  },
+  {
+    path: '/guideline-check',
+    label: '文言チェック',
+    icon: 'carbon:rule-filled',
   },
 ];
 
