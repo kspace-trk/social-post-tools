@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MainButton, SectionTextWithLine, TextareaField, TextItem } from 'admin-ui-components';
+import { InputField, MainButton, SectionTextWithLine, TextareaField, TextItem } from 'admin-ui-components';
 </script>
 
 <template>
@@ -46,6 +46,35 @@ import { MainButton, SectionTextWithLine, TextareaField, TextItem } from 'admin-
             "
             show-close-icon
             max-lines="6"
+            class="reference-post-item"
+          />
+        </div>
+      </div>
+      <div class="translate-post-setting">
+        <SectionTextWithLine
+          text="翻訳設定"
+          class="section-text"
+        />
+        <InputField
+          v-model="text"
+          class="reference-post-input"
+          label="ルール"
+        />
+        <div class="button-container">
+          <MainButton text="追加" />
+        </div>
+        <div class="reference-post-list">
+          <p class="reference-post-list-title">
+            登録済み
+          </p>
+          <TextItem
+            text="URLのパスは、vuefes.jp/2025/en のように、/en を追加する"
+            show-close-icon
+            class="reference-post-item"
+          />
+          <TextItem
+            text="文字数は、Bluesky に対応するように300文字以内"
+            show-close-icon
             class="reference-post-item"
           />
         </div>
