@@ -1,8 +1,30 @@
 <script setup lang="ts">
 import { MainButton, TextareaField } from 'admin-ui-components';
 
+const { data, pending, translateText } = useTranslate();
+const { config } = useConfig();
+
 const text = ref('');
 const result = ref('');
+
+// 翻訳を実行する関数
+const handleTranslate = async (): Promise<void> => {
+  if (!text.value.trim()) {
+    return;
+  }
+
+  // useConfigからrulesを取得
+  const rules = config.value.translateConfig.map(item => item.rule);
+
+  const response = await translateText({
+    text: text.value,
+    rules,
+  });
+
+  if (response) {
+    result.value = response.translatedText;
+  }
+};
 </script>
 
 <template>
@@ -14,7 +36,12 @@ const result = ref('');
         label="何を翻訳する？"
       />
       <div class="button-container">
-        <MainButton text="翻訳する" />
+        <MainButton
+          text="翻訳する"
+          :loading="pending"
+          :disabled="!text.trim()"
+          @click="handleTranslate"
+        />
       </div>
 
       <TextareaField
