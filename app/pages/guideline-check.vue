@@ -1,8 +1,30 @@
 <script setup lang="ts">
 import { MainButton, TextareaField } from 'admin-ui-components';
 
+const { data, pending, checkGuideline } = useGuidelineCheck();
+const { config } = useConfig();
+
 const text = ref('');
 const result = ref('');
+
+// ガイドラインチェックを実行する関数
+const handleCheck = async (): Promise<void> => {
+  if (!text.value.trim()) {
+    return;
+  }
+
+  // useConfigからrulesを取得
+  const rules = config.value.guidelineCheckConfig.map(item => item.rule);
+
+  const response = await checkGuideline({
+    text: text.value,
+    rules,
+  });
+
+  if (response) {
+    result.value = response.guidelineCheckText;
+  }
+};
 </script>
 
 <template>
@@ -14,7 +36,12 @@ const result = ref('');
         label="文言チェック"
       />
       <div class="button-container">
-        <MainButton text="チェックする" />
+        <MainButton
+          text="チェックする"
+          :loading="pending"
+          :disabled="!text.trim()"
+          @click="handleCheck"
+        />
       </div>
 
       <TextareaField
