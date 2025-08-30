@@ -1,10 +1,5 @@
-import OpenAI from 'openai';
 import type { GeneratePostRequestBody, GeneratePostResponse } from '~~/shared/api/generatePost';
-
-// OpenAI クライアントの初期化
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+import { generateTextWithAI, createSystemPromptWithReferences } from './ai';
 
 /**
  * ソーシャルメディア投稿を生成する関数
@@ -16,41 +11,20 @@ export const generatePost = async (requestBody: GeneratePostRequestBody): Promis
 
   try {
     // システムプロンプトの作成
-    let systemPrompt = `以下の参考投稿の形式を取り入れて、要求に基づいて投稿文を生成してください。`;
+    const systemPrompt = createSystemPromptWithReferences(referencePosts);
 
-    // 参考投稿がある場合はシステムプロンプトに追加
-    if (referencePosts && referencePosts.length > 0) {
-      systemPrompt += `\n\n参考投稿:\n`;
-      referencePosts.forEach((post: string, index: number) => {
-        systemPrompt += `\n例${index + 1}: "${post}"\n`;
-      });
-    }
+    // ユーザープロンプトの作成
+    const userPrompt = `以下の要求に基づいて投稿文を生成してください:\n\n${requirements}`;
 
-    // OpenAI APIでの投稿生成
-    const response = await openai.chat.completions.create({
+    // AI APIでの投稿生成
+    const generatedPost = await generateTextWithAI(systemPrompt, userPrompt, {
       model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content: systemPrompt,
-        },
-        {
-          role: 'user',
-          content: `以下の要求に基づいて投稿文を生成してください:\n\n${requirements}`,
-        },
-      ],
-      max_tokens: 500,
+      maxTokens: 500,
       temperature: 0.7,
     });
 
-    const generatedPost = response.choices[0]?.message?.content;
-
-    if (!generatedPost) {
-      throw new Error('投稿の生成に失敗しました');
-    }
-
     return {
-      post: generatedPost.trim(),
+      post: generatedPost,
     };
   }
   catch (error) {
