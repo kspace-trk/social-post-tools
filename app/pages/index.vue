@@ -35,7 +35,7 @@ const displayResult = computed(() => {
         v-model="requirements"
         class="textarea-input"
         label="どんな要件？"
-        placeholder="例: 新商品の紹介投稿を作成してください"
+        placeholder=""
       />
 
       <div class="button-container">
