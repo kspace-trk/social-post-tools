@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { setup, $fetch } from '@nuxt/test-utils/e2e';
 
 describe('API Tests', () => {
