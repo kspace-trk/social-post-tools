@@ -31,5 +31,9 @@
     "playwright-core": "latest",
     "sass-embedded": "latest",
     "vitest": "latest"
+  },
+  "optionalDependencies": {
+    "@oxc-parser/binding-linux-x64-gnu": "latest",
+    "@rollup/rollup-linux-x64-gnu": "latest"
   }
 }
