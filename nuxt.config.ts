@@ -9,6 +9,10 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
+  runtimeConfig: {
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+  },
+
   compatibilityDate: '2024-11-01',
 
   vite: {
