@@ -1,5 +1,6 @@
 import type { Config } from '~/utils/config';
 import { useStorage } from '@vueuse/core';
+import { v4 as uuidv4 } from 'uuid';
 
 const key = 'config';
 
@@ -25,36 +26,27 @@ export const useConfig = (): UseConfigReturnType => {
   });
 
   const addGeneratePostConfig = (post: string): void => {
-    config.value.generatePostConfig.push({ id: useId(), post });
+    config.value.generatePostConfig.push({ id: uuidv4(), post });
   };
 
   const removeGeneratePostConfig = (id: string): void => {
-    const index = config.value.generatePostConfig.findIndex(item => item.id === id);
-    if (index !== -1) {
-      config.value.generatePostConfig.splice(index, 1);
-    }
+    config.value.generatePostConfig = config.value.generatePostConfig.filter(item => item.id !== id);
   };
 
   const addTranslateConfig = (rule: string): void => {
-    config.value.translateConfig.push({ id: useId(), rule });
+    config.value.translateConfig.push({ id: uuidv4(), rule });
   };
 
   const removeTranslateConfig = (id: string): void => {
-    const index = config.value.translateConfig.findIndex(item => item.id === id);
-    if (index !== -1) {
-      config.value.translateConfig.splice(index, 1);
-    }
+    config.value.translateConfig = config.value.translateConfig.filter(item => item.id !== id);
   };
 
   const addGuidelineCheckConfig = (rule: string): void => {
-    config.value.guidelineCheckConfig.push({ id: useId(), rule });
+    config.value.guidelineCheckConfig.push({ id: uuidv4(), rule });
   };
 
   const removeGuidelineCheckConfig = (id: string): void => {
-    const index = config.value.guidelineCheckConfig.findIndex(item => item.id === id);
-    if (index !== -1) {
-      config.value.guidelineCheckConfig.splice(index, 1);
-    }
+    config.value.guidelineCheckConfig = config.value.guidelineCheckConfig.filter(item => item.id !== id);
   };
 
   return {

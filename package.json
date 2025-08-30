@@ -20,6 +20,7 @@
     "admin-ui-components": "github:kspace-trk/admin-ui-components",
     "nuxt": "latest",
     "openai": "^5.16.0",
+    "uuid": "^11.1.0",
     "vue": "latest",
     "vue-router": "latest",
     "zod": "^4.1.5"
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@nuxt/eslint": "latest",
     "@nuxt/test-utils": "latest",
+    "@types/uuid": "^10.0.0",
     "@vue/test-utils": "latest",
     "happy-dom": "latest",
     "playwright-core": "latest",
