@@ -1,5 +1,5 @@
 export type GeneratePostRequestBody = {
-  post: string;
+  requirements: string;
   referencePosts: string[];
 };
 
