@@ -1,23 +1,15 @@
-import type { GuidelineCheckRequestBody, GuidelineCheckResponse } from '~~/shared/types/api/guidelineCheck';
+import { z } from 'zod';
+import type { GuidelineCheckResponse } from '~~/shared/types/api/guidelineCheck';
 import { checkGuideline } from '~~/server/utils/guidelineCheck';
 
 export default defineEventHandler(async (event): Promise<GuidelineCheckResponse> => {
   try {
-    const body = await readBody<GuidelineCheckRequestBody>(event);
-    // リクエストボディのバリデーション
-    if (!body.text || typeof body.text !== 'string') {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'テキストが必要です',
-      });
-    }
+    const bodySchema = z.object({
+      text: z.string().min(1, 'テキストは必須です'),
+      rules: z.array(z.string()).min(1, 'ルールは1つ以上指定してください'),
+    });
 
-    if (!body.rules || !Array.isArray(body.rules)) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'ルールは配列で指定してください',
-      });
-    }
+    const body = await readValidatedBody(event, bodySchema.parse);
 
     // ガイドラインチェックの実行
     const result = await checkGuideline(body);

@@ -1,23 +1,15 @@
-import type { TranslateRequestBody, TranslateResponse } from '~~/shared/types/api/translate';
+import { z } from 'zod';
+import type { TranslateResponse } from '~~/shared/types/api/translate';
 import { translateText } from '~~/server/utils/translate';
 
 export default defineEventHandler(async (event): Promise<TranslateResponse> => {
   try {
-    const body = await readBody<TranslateRequestBody>(event);
-    // リクエストボディのバリデーション
-    if (!body.text || typeof body.text !== 'string') {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'テキストが必要です',
-      });
-    }
+    const bodySchema = z.object({
+      text: z.string().min(1, 'テキストは必須です'),
+      rules: z.array(z.string()).min(1, 'ルールは1つ以上指定してください'),
+    });
 
-    if (!body.rules || !Array.isArray(body.rules)) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'ルールは配列で指定してください',
-      });
-    }
+    const body = await readValidatedBody(event, bodySchema.parse);
 
     // 翻訳の実行
     const result = await translateText(body);
