@@ -1,5 +1,45 @@
 <script setup lang="ts">
 import { InputField, MainButton, SectionTextWithLine, TextareaField, TextItem } from 'admin-ui-components';
+import { useConfig } from '~/composables/useConfig';
+
+const {
+  config,
+  addGeneratePostConfig,
+  removeGeneratePostConfig,
+  addTranslateConfig,
+  removeTranslateConfig,
+  addGuidelineCheckConfig,
+  removeGuidelineCheckConfig,
+} = useConfig();
+
+// 入力フィールド用のリアクティブ変数
+const generatePostInput = ref('');
+const translateInput = ref('');
+const guidelineCheckInput = ref('');
+
+// 投稿文生成設定の追加
+const handleAddGeneratePost = (): void => {
+  if (generatePostInput.value.trim()) {
+    addGeneratePostConfig(generatePostInput.value.trim());
+    generatePostInput.value = '';
+  }
+};
+
+// 翻訳設定の追加
+const handleAddTranslate = (): void => {
+  if (translateInput.value.trim()) {
+    addTranslateConfig(translateInput.value.trim());
+    translateInput.value = '';
+  }
+};
+
+// 文言チェック設定の追加
+const handleAddGuidelineCheck = (): void => {
+  if (guidelineCheckInput.value.trim()) {
+    addGuidelineCheckConfig(guidelineCheckInput.value.trim());
+    guidelineCheckInput.value = '';
+  }
+};
 </script>
 
 <template>
@@ -11,42 +51,28 @@ import { InputField, MainButton, SectionTextWithLine, TextareaField, TextItem } 
           class="section-text"
         />
         <TextareaField
-          v-model="text"
+          v-model="generatePostInput"
           class="reference-post-input"
           label="投稿文枠組み参考ポスト"
         />
         <div class="button-container">
-          <MainButton text="追加" />
+          <MainButton
+            text="追加"
+            @click="handleAddGeneratePost"
+          />
         </div>
         <div class="reference-post-list">
           <p class="reference-post-list-title">
             登録済み
           </p>
           <TextItem
-            text="/
-            📣 投稿文サンプル
-            \
-
-            こんにちは！
-            a
-            b
-            "
+            v-for="item in config.generatePostConfig"
+            :key="item.id"
+            :text="item.post"
             show-close-icon
-            max-lines="6"
+            :max-lines="6"
             class="reference-post-item"
-          />
-          <TextItem
-            text="/
-            📣 投稿文サンプル
-            \
-
-            こんにちは！
-            a
-            b
-            "
-            show-close-icon
-            max-lines="6"
-            class="reference-post-item"
+            @close="removeGeneratePostConfig(item.id)"
           />
         </div>
       </div>
@@ -56,26 +82,27 @@ import { InputField, MainButton, SectionTextWithLine, TextareaField, TextItem } 
           class="section-text"
         />
         <InputField
-          v-model="text"
+          v-model="translateInput"
           class="reference-post-input"
           label="ルール"
         />
         <div class="button-container">
-          <MainButton text="追加" />
+          <MainButton
+            text="追加"
+            @click="handleAddTranslate"
+          />
         </div>
         <div class="reference-post-list">
           <p class="reference-post-list-title">
             登録済み
           </p>
           <TextItem
-            text="URLのパスは、vuefes.jp/2025/en のように、/en を追加する"
+            v-for="item in config.translateConfig"
+            :key="item.id"
+            :text="item.rule"
             show-close-icon
             class="reference-post-item"
-          />
-          <TextItem
-            text="文字数は、Bluesky に対応するように300文字以内"
-            show-close-icon
-            class="reference-post-item"
+            @close="removeTranslateConfig(item.id)"
           />
         </div>
       </div>
@@ -85,21 +112,27 @@ import { InputField, MainButton, SectionTextWithLine, TextareaField, TextItem } 
           class="section-text"
         />
         <InputField
-          v-model="text"
+          v-model="guidelineCheckInput"
           class="reference-post-input"
           label="ルール"
         />
         <div class="button-container">
-          <MainButton text="追加" />
+          <MainButton
+            text="追加"
+            @click="handleAddGuidelineCheck"
+          />
         </div>
         <div class="reference-post-list">
           <p class="reference-post-list-title">
             登録済み
           </p>
           <TextItem
-            text="ハッシュタグに #vuefes を設定"
+            v-for="item in config.guidelineCheckConfig"
+            :key="item.id"
+            :text="item.rule"
             show-close-icon
             class="reference-post-item"
+            @close="removeGuidelineCheckConfig(item.id)"
           />
         </div>
       </div>
