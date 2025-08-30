@@ -33,7 +33,6 @@
     "vitest": "latest"
   },
   "optionalDependencies": {
-    "@oxc-parser/binding-linux-x64-gnu": "latest",
-    "@rollup/rollup-linux-x64-gnu": "latest"
+    "@oxc-transform/binding-linux-x64-gnu": "latest"
   }
 }
