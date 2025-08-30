@@ -1,4 +1,4 @@
-import type { GeneratePostRequestBody, GeneratePostResponse } from '~~/shared/api/generatePost';
+import type { GeneratePostRequestBody, GeneratePostResponse } from '~~/shared/types/api/generatePost';
 
 interface UseGeneratePostReturn {
   data: Readonly<Ref<GeneratePostResponse | null>>;

@@ -1,4 +1,4 @@
-import type { TranslateRequestBody, TranslateResponse } from '~~/shared/api/translate';
+import type { TranslateRequestBody, TranslateResponse } from '~~/shared/types/api/translate';
 
 interface UseTranslateReturn {
   data: Readonly<Ref<TranslateResponse | null>>;

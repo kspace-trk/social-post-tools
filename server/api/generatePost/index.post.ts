@@ -1,4 +1,4 @@
-import type { GeneratePostRequestBody, GeneratePostResponse } from '~~/shared/api/generatePost';
+import type { GeneratePostRequestBody, GeneratePostResponse } from '~~/shared/types/api/generatePost';
 import { generatePost } from '~~/server/utils/ post';
 
 export default defineEventHandler(async (event): Promise<GeneratePostResponse> => {

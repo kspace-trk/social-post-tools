@@ -1,4 +1,4 @@
-import type { TranslateRequestBody, TranslateResponse } from '~~/shared/api/translate';
+import type { TranslateRequestBody, TranslateResponse } from '~~/shared/types/api/translate';
 import { translateText } from '~~/server/utils/translate';
 
 export default defineEventHandler(async (event): Promise<TranslateResponse> => {

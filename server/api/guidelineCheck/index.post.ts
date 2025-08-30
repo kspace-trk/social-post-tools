@@ -1,4 +1,4 @@
-import type { GuidelineCheckRequestBody, GuidelineCheckResponse } from '~~/shared/api/guidelineCheck';
+import type { GuidelineCheckRequestBody, GuidelineCheckResponse } from '~~/shared/types/api/guidelineCheck';
 import { checkGuideline } from '~~/server/utils/guidelineCheck';
 
 export default defineEventHandler(async (event): Promise<GuidelineCheckResponse> => {

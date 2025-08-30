@@ -1,5 +1,5 @@
 import { generateTextWithAI } from './ai';
-import type { GuidelineCheckRequestBody, GuidelineCheckResponse } from '~~/shared/api/guidelineCheck';
+import type { GuidelineCheckRequestBody, GuidelineCheckResponse } from '~~/shared/types/api/guidelineCheck';
 
 /**
  * テキストがガイドラインに適合しているかをチェックする関数

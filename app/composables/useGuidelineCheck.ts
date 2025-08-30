@@ -1,4 +1,4 @@
-import type { GuidelineCheckRequestBody, GuidelineCheckResponse } from '~~/shared/api/guidelineCheck';
+import type { GuidelineCheckRequestBody, GuidelineCheckResponse } from '~~/shared/types/api/guidelineCheck';
 
 interface UseGuidelineCheckReturn {
   data: Readonly<Ref<GuidelineCheckResponse | null>>;

@@ -1,5 +1,5 @@
 import { generateTextWithAI } from './ai';
-import type { TranslateRequestBody, TranslateResponse } from '~~/shared/api/translate';
+import type { TranslateRequestBody, TranslateResponse } from '~~/shared/types/api/translate';
 
 /**
  * 日本語テキストを英語に翻訳する関数
