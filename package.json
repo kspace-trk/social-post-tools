@@ -19,6 +19,7 @@
     "@vueuse/core": "^13.8.0",
     "admin-ui-components": "github:kspace-trk/admin-ui-components",
     "nuxt": "latest",
+    "openai": "^5.16.0",
     "vue": "latest",
     "vue-router": "latest"
   },
