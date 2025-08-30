@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@nuxt/image": "latest",
+    "@vueuse/core": "^13.8.0",
     "admin-ui-components": "github:kspace-trk/admin-ui-components",
     "nuxt": "latest",
     "vue": "latest",
