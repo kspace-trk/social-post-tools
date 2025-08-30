@@ -27,6 +27,27 @@ const bottomMenuItem: SideHeaderMenuItem = {
 };
 
 const route = useRoute();
+
+// 現在のパスに基づいてページタイトルを取得する関数
+const getPageTitle = (): string => {
+  const currentPath = route.path;
+
+  // メインメニューから検索
+  const mainMenuItem = menuItems.find(item => item.path === currentPath);
+  if (mainMenuItem) {
+    return mainMenuItem.label;
+  }
+
+  // ボトムメニューから検索
+  if (bottomMenuItem.path === currentPath) {
+    return bottomMenuItem.label;
+  }
+
+  // デフォルトタイトル
+  return 'social-post-tools';
+};
+
+const pageTitle = computed(() => getPageTitle());
 </script>
 
 <template>
@@ -38,7 +59,7 @@ const route = useRoute();
       :bottom-menu-item="bottomMenuItem"
     />
     <div class="main-content">
-      <TopHeader title="ヘッダー名" />
+      <TopHeader :title="pageTitle" />
       <slot />
     </div>
   </div>
