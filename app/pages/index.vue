@@ -51,7 +51,7 @@ const displayResult = computed(() => {
         :model-value="displayResult"
         class="textarea-result"
         label="生成結果"
-        rows="10"
+        :rows="10"
         readonly
       />
     </div>
