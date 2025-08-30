@@ -6,7 +6,7 @@
 
 テストは以下のディレクトリ構造で管理されています：
 
-```
+```text
 tests/
 ├── app/      # アプリケーション（フロントエンド）のテスト
 ├── server/   # サーバーサイドのテスト
@@ -72,4 +72,4 @@ describe('API Tests', () => {
 ## 参考リンク
 
 - [Nuxt Test Utils ドキュメント](https://nuxt.com/docs/getting-started/testing)
-- [Vitest ドキュメント](https://vitest.dev/) 
+- [Vitest ドキュメント](https://vitest.dev/)
