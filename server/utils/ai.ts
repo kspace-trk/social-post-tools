@@ -18,13 +18,11 @@ export const generateTextWithAI = async (
   options: {
     model?: string;
     maxTokens?: number;
-    temperature?: number;
   } = {},
 ): Promise<string> => {
   const {
     model = 'gpt-4o-mini',
     maxTokens = 500,
-    temperature = 0.7,
   } = options;
 
   try {
@@ -40,8 +38,7 @@ export const generateTextWithAI = async (
           content: userPrompt,
         },
       ],
-      max_tokens: maxTokens,
-      temperature,
+      max_completion_tokens: maxTokens,
     });
 
     const generatedText = response.choices[0]?.message?.content;

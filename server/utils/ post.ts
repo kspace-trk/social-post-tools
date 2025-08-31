@@ -19,8 +19,6 @@ export const generatePost = async (requestBody: GeneratePostRequestBody): Promis
     // AI APIでの投稿生成
     const generatedPost = await generateTextWithAI(systemPrompt, userPrompt, {
       model: 'gpt-5-mini',
-      maxTokens: 500,
-      temperature: 0.7,
     });
 
     return {
