@@ -18,6 +18,7 @@ export const generateTextWithAI = async (
   options: {
     model?: string;
     maxTokens?: number;
+    temperature?: number;
   } = {},
 ): Promise<string> => {
   const {
