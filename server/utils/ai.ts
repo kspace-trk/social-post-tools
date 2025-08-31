@@ -24,6 +24,7 @@ export const generateTextWithAI = async (
   const {
     model = 'gpt-4o-mini',
     maxTokens = 500,
+    temperature = 1,
   } = options;
 
   try {
@@ -40,12 +41,18 @@ export const generateTextWithAI = async (
         },
       ],
       max_completion_tokens: maxTokens,
+      temperature,
     });
 
     const generatedText = response.choices[0]?.message?.content;
 
     if (!generatedText) {
-      throw new Error('テキストの生成に失敗しました');
+      console.error('AI応答の詳細:', {
+        choices: response.choices,
+        usage: response.usage,
+        model: response.model,
+      });
+      throw new Error(`テキストの生成に失敗しました。レスポンス: ${JSON.stringify(response.choices)}`);
     }
 
     return generatedText.trim();
