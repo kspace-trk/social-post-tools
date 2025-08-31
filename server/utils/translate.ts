@@ -30,6 +30,7 @@ export const translateText = async (requestBody: TranslateRequestBody): Promise<
     const translatedText = await generateTextWithAI(systemPrompt, userPrompt, {
       model: 'gpt-4o-mini',
       maxTokens: 1000,
+      temperature: 0.3, // 翻訳では一貫性を重視するため低い値
     });
 
     return {
