@@ -10,7 +10,7 @@ export const translateText = async (requestBody: TranslateRequestBody): Promise<
   const { text, rules } = requestBody;
   try {
     // システムプロンプトの作成（日本語→英語専用）
-    let systemPrompt = `あなたは英語のSNS運用担当者です。必ずルールに従って、日本語のテキストを英語に翻訳してください。`;
+    let systemPrompt = `あなたは英語のSNS運用担当者です。元の文章の形式を尊重しつつ、ルールに従って、日本語のテキストを英語に翻訳してください。`;
 
     // ルールがある場合はシステムプロンプトに追加
     if (rules && rules.length > 0) {
