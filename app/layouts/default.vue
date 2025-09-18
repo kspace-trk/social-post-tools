@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SideHeader, TopHeader, type SideHeaderMenuItem } from 'admin-ui-components';
+import type { SideHeaderMenuItem } from '@kspace-trk/admin-ui-components/runtime';
 import { useRoute } from '#app';
 
 const menuItems: SideHeaderMenuItem[] = [
