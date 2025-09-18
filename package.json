@@ -16,9 +16,9 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@kspace-trk/admin-ui-components": "github:kspace-trk/admin-ui-components",
     "@nuxt/image": "latest",
     "@vueuse/core": "^13.8.0",
-    "admin-ui-components": "github:kspace-trk/admin-ui-components",
     "nuxt": "latest",
     "openai": "^5.16.0",
     "uuid": "^11.1.0",

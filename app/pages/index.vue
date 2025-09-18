@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { MainButton, TextareaField } from 'admin-ui-components';
-
 const requirements = ref('');
 const { data, pending, error, generatePost } = useGeneratePost();
 const { config } = useConfig();

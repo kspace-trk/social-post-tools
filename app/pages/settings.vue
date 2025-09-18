@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { InputField, MainButton, SectionTextWithLine, TextareaField, TextItem } from 'admin-ui-components';
 import { useConfig } from '~/composables/useConfig';
 
 const {

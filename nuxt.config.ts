@@ -4,6 +4,7 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxt/test-utils/module',
     '@nuxt/image',
+    '@kspace-trk/admin-ui-components',
   ],
   ssr: false,
 

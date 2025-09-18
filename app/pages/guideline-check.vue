@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { MainButton, TextareaField } from 'admin-ui-components';
-
 const { data, pending, checkGuideline } = useGuidelineCheck();
 const { config } = useConfig();
 
