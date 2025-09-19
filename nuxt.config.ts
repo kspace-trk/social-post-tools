@@ -10,6 +10,11 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
+  css: [
+    '@kspace-trk/admin-ui-components/runtime/assets/css/reset.css',
+    '@kspace-trk/admin-ui-components/runtime/assets/css/fonts/mplus-1p.css',
+  ],
+
   runtimeConfig: {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   },
