@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { KSTextareaField } from '@kspace-trk/admin-ui-components/runtime';
-
 const { data, pending, checkGuideline } = useGuidelineCheck();
 const { config } = useConfig();
 
