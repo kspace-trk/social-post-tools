@@ -16,7 +16,7 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@kspace-trk/admin-ui-components": "github:kspace-trk/admin-ui-components",
+    "@kspace-trk/admin-ui-components": "github:kspace-trk/admin-ui-components#update-css-settings",
     "@nuxt/image": "latest",
     "@vueuse/core": "^13.8.0",
     "nuxt": "latest",
