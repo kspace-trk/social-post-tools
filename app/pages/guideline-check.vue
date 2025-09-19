@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { KSTextareaField } from '@kspace-trk/admin-ui-components/runtime';
+
 const { data, pending, checkGuideline } = useGuidelineCheck();
 const { config } = useConfig();
 
@@ -28,13 +30,13 @@ const handleCheck = async (): Promise<void> => {
 <template>
   <div id="index">
     <div class="container">
-      <TextareaField
+      <KSTextareaField
         v-model="text"
         class="textarea-input"
         label="文言チェック"
       />
       <div class="button-container">
-        <MainButton
+        <KSMainButton
           text="チェックする"
           :loading="pending"
           :disabled="!text.trim()"

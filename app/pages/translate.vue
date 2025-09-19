@@ -28,13 +28,13 @@ const handleTranslate = async (): Promise<void> => {
 <template>
   <div id="index">
     <div class="container">
-      <TextareaField
+      <KSTextareaField
         v-model="text"
         class="textarea-input"
         label="何を翻訳する？"
       />
       <div class="button-container">
-        <MainButton
+        <KSMainButton
           text="翻訳する"
           :loading="pending"
           :disabled="!text.trim()"
@@ -42,7 +42,7 @@ const handleTranslate = async (): Promise<void> => {
         />
       </div>
 
-      <TextareaField
+      <KSTextareaField
         v-model="result"
         class="textarea-result"
         label="翻訳結果"

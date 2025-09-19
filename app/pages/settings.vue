@@ -45,17 +45,17 @@ const handleAddGuidelineCheck = (): void => {
   <div id="settings">
     <div class="container">
       <div class="generate-post-setting">
-        <SectionTextWithLine
+        <KSSectionTextWithLine
           text="投稿文生成設定"
           class="section-text"
         />
-        <TextareaField
+        <KSTextareaField
           v-model="generatePostInput"
           class="reference-post-input"
           label="投稿文枠組み参考ポスト"
         />
         <div class="button-container">
-          <MainButton
+          <KSMainButton
             text="追加"
             @click="handleAddGeneratePost"
           />
@@ -64,7 +64,7 @@ const handleAddGuidelineCheck = (): void => {
           <p class="reference-post-list-title">
             登録済み
           </p>
-          <TextItem
+          <KSTextItem
             v-for="item in config.generatePostConfig"
             :key="item.id"
             :text="item.post"
@@ -76,17 +76,17 @@ const handleAddGuidelineCheck = (): void => {
         </div>
       </div>
       <div class="translate-setting">
-        <SectionTextWithLine
+        <KSSectionTextWithLine
           text="翻訳設定"
           class="section-text"
         />
-        <InputField
+        <KSTextareaField
           v-model="translateInput"
           class="reference-post-input"
           label="ルール"
         />
         <div class="button-container">
-          <MainButton
+          <KSMainButton
             text="追加"
             @click="handleAddTranslate"
           />
@@ -95,7 +95,7 @@ const handleAddGuidelineCheck = (): void => {
           <p class="reference-post-list-title">
             登録済み
           </p>
-          <TextItem
+          <KSTextItem
             v-for="item in config.translateConfig"
             :key="item.id"
             :text="item.rule"
@@ -106,17 +106,17 @@ const handleAddGuidelineCheck = (): void => {
         </div>
       </div>
       <div class="guideline-check-setting">
-        <SectionTextWithLine
+        <KSSectionTextWithLine
           text="文言チェック設定"
           class="section-text"
         />
-        <InputField
+        <KSTextareaField
           v-model="guidelineCheckInput"
           class="reference-post-input"
           label="ルール"
         />
         <div class="button-container">
-          <MainButton
+          <KSMainButton
             text="追加"
             @click="handleAddGuidelineCheck"
           />
@@ -125,7 +125,7 @@ const handleAddGuidelineCheck = (): void => {
           <p class="reference-post-list-title">
             登録済み
           </p>
-          <TextItem
+          <KSTextItem
             v-for="item in config.guidelineCheckConfig"
             :key="item.id"
             :text="item.rule"
