@@ -28,13 +28,13 @@ const handleCheck = async (): Promise<void> => {
 <template>
   <div id="index">
     <div class="container">
-      <TextareaField
+      <KSTextareaField
         v-model="text"
         class="textarea-input"
         label="文言チェック"
       />
       <div class="button-container">
-        <MainButton
+        <KSMainButton
           text="チェックする"
           :loading="pending"
           :disabled="!text.trim()"

@@ -29,7 +29,7 @@ const displayResult = computed(() => {
 <template>
   <div id="index">
     <div class="container">
-      <TextareaField
+      <KSTextareaField
         v-model="requirements"
         class="textarea-input"
         label="どんな要件？"
@@ -37,7 +37,7 @@ const displayResult = computed(() => {
       />
 
       <div class="button-container">
-        <MainButton
+        <KSMainButton
           text="生成する"
           :disabled="!requirements.trim() || pending"
           :loading="pending"
@@ -45,7 +45,7 @@ const displayResult = computed(() => {
         />
       </div>
 
-      <TextareaField
+      <KSTextareaField
         :model-value="displayResult"
         class="textarea-result"
         label="生成結果"

@@ -37,6 +37,7 @@
     "vitest": "latest"
   },
   "optionalDependencies": {
+    "@esbuild/linux-x64": "latest",
     "@oxc-minify/binding-linux-x64-gnu": "latest",
     "@oxc-parser/binding-linux-x64-gnu": "latest",
     "@oxc-transform/binding-linux-x64-gnu": "latest",
