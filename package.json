@@ -18,13 +18,13 @@
   "dependencies": {
     "@kspace-trk/admin-ui-components": "github:kspace-trk/admin-ui-components",
     "@nuxt/image": "latest",
-    "@vueuse/core": "^13.8.0",
+    "@vueuse/core": "^14.2.1",
     "nuxt": "latest",
-    "openai": "^5.16.0",
-    "uuid": "^11.1.0",
+    "openai": "^6.22.0",
+    "uuid": "^13.0.0",
     "vue": "latest",
     "vue-router": "latest",
-    "zod": "^3.25.0"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@nuxt/eslint": "latest",
