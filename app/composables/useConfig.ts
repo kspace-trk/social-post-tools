@@ -12,6 +12,8 @@ export type UseConfigReturnType = {
   removeTranslateConfig: (id: string) => void;
   addGuidelineCheckConfig: (rule: string) => void;
   removeGuidelineCheckConfig: (id: string) => void;
+  exportConfig: () => string;
+  importConfig: (jsonStr: string) => void;
 };
 
 export const useConfig = (): UseConfigReturnType => {
@@ -49,6 +51,33 @@ export const useConfig = (): UseConfigReturnType => {
     config.value.guidelineCheckConfig = config.value.guidelineCheckConfig.filter(item => item.id !== id);
   };
 
+  const exportConfig = (): string => {
+    return JSON.stringify(config.value, null, 2);
+  };
+
+  const importConfig = (jsonStr: string): void => {
+    const parsed = JSON.parse(jsonStr) as Config;
+    if (!Array.isArray(parsed.generatePostConfig)
+      || !Array.isArray(parsed.translateConfig)
+      || !Array.isArray(parsed.guidelineCheckConfig)) {
+      throw new Error('Invalid config format');
+    }
+    config.value = {
+      generatePostConfig: parsed.generatePostConfig.map(item => ({
+        id: uuidv4(),
+        post: item.post,
+      })),
+      translateConfig: parsed.translateConfig.map(item => ({
+        id: uuidv4(),
+        rule: item.rule,
+      })),
+      guidelineCheckConfig: parsed.guidelineCheckConfig.map(item => ({
+        id: uuidv4(),
+        rule: item.rule,
+      })),
+    };
+  };
+
   return {
     config,
     addGeneratePostConfig,
@@ -57,5 +86,7 @@ export const useConfig = (): UseConfigReturnType => {
     removeTranslateConfig,
     addGuidelineCheckConfig,
     removeGuidelineCheckConfig,
+    exportConfig,
+    importConfig,
   };
 };

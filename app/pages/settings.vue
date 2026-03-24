@@ -9,12 +9,53 @@ const {
   removeTranslateConfig,
   addGuidelineCheckConfig,
   removeGuidelineCheckConfig,
+  exportConfig,
+  importConfig,
 } = useConfig();
 
 // 入力フィールド用のリアクティブ変数
 const generatePostInput = ref('');
 const translateInput = ref('');
 const guidelineCheckInput = ref('');
+
+// 設定の共有
+const isImportModalOpen = ref(false);
+const importInput = ref('');
+const toastVisible = ref(false);
+const toastMessage = ref('');
+const toastType = ref<'success' | 'error'>('success');
+
+const showToast = (message: string, type: 'success' | 'error'): void => {
+  toastMessage.value = message;
+  toastType.value = type;
+  toastVisible.value = true;
+};
+
+const handleCopyConfig = async (): Promise<void> => {
+  try {
+    await navigator.clipboard.writeText(exportConfig());
+    showToast('設定をクリップボードにコピーしました', 'success');
+  }
+  catch {
+    showToast('コピーに失敗しました', 'error');
+  }
+};
+
+const handleOpenImportModal = (): void => {
+  importInput.value = '';
+  isImportModalOpen.value = true;
+};
+
+const handleImportConfig = (): void => {
+  try {
+    importConfig(importInput.value);
+    isImportModalOpen.value = false;
+    showToast('設定を反映しました', 'success');
+  }
+  catch {
+    showToast('設定の形式が正しくありません', 'error');
+  }
+};
 
 // 投稿文生成設定の追加
 const handleAddGeneratePost = (): void => {
@@ -44,6 +85,25 @@ const handleAddGuidelineCheck = (): void => {
 <template>
   <div id="settings">
     <div class="container">
+      <div class="share-setting">
+        <KSSectionTextWithLine
+          text="設定の共有"
+          class="section-text"
+        />
+        <p class="share-description">
+          設定をコピーして他の人と共有できます。共有された設定を貼り付けて反映することもできます。
+        </p>
+        <div class="share-buttons">
+          <KSMainButton
+            text="設定をコピー"
+            @click="handleCopyConfig"
+          />
+          <KSMainButton
+            text="設定を貼り付け"
+            @click="handleOpenImportModal"
+          />
+        </div>
+      </div>
       <div class="generate-post-setting">
         <KSSectionTextWithLine
           text="投稿文生成設定"
@@ -136,6 +196,44 @@ const handleAddGuidelineCheck = (): void => {
         </div>
       </div>
     </div>
+
+    <KSModal
+      :open="isImportModalOpen"
+      title="設定を貼り付け"
+      width="560px"
+      @close="isImportModalOpen = false"
+    >
+      <p class="import-modal-description">
+        共有された設定のJSONを貼り付けてください。現在の設定は上書きされます。
+      </p>
+      <KSTextareaField
+        v-model="importInput"
+        label="設定JSON"
+        :rows="10"
+      />
+      <template #footer>
+        <div class="import-modal-footer">
+          <KSMainButton
+            text="キャンセル"
+            type="cancel"
+            @click="isImportModalOpen = false"
+          />
+          <KSMainButton
+            text="反映する"
+            :disabled="!importInput.trim()"
+            @click="handleImportConfig"
+          />
+        </div>
+      </template>
+    </KSModal>
+
+    <KSToast
+      :visible="toastVisible"
+      :message="toastMessage"
+      :type="toastType"
+      position="top-center"
+      @close="toastVisible = false"
+    />
   </div>
 </template>
 
@@ -191,5 +289,32 @@ const handleAddGuidelineCheck = (): void => {
 
 .reference-post-item {
   margin-top: 8px;
+}
+
+.share-description {
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: 16px;
+  line-height: 1.6;
+}
+
+.share-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.import-modal-description {
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.import-modal-footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
 }
 </style>
