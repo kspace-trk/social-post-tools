@@ -22,7 +22,7 @@ export const generateTextWithAI = async (
   } = {},
 ): Promise<string> => {
   const {
-    model = 'gpt-4o-mini',
+    model = 'gpt-5.4',
     maxTokens = 500,
     temperature = 1,
   } = options;

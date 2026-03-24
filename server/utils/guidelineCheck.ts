@@ -26,7 +26,6 @@ export const checkGuideline = async (requestBody: GuidelineCheckRequestBody): Pr
 
     // AI APIでのガイドラインチェック
     const guidelineCheckText = await generateTextWithAI(systemPrompt, userPrompt, {
-      model: 'gpt-5-mini',
       maxTokens: 5000,
     });
 

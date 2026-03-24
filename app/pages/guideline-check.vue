@@ -42,11 +42,10 @@ const handleCheck = async (): Promise<void> => {
         />
       </div>
 
-      <TextareaField
+      <KSTextareaField
         v-model="result"
         class="textarea-result"
         label="結果"
-        rows="10"
       />
     </div>
   </div>

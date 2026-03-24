@@ -27,7 +27,6 @@ export const translateText = async (requestBody: TranslateRequestBody): Promise<
 
     // AI APIでの翻訳
     const translatedText = await generateTextWithAI(systemPrompt, userPrompt, {
-      model: 'gpt-5-mini',
       maxTokens: 2000,
     });
 
