@@ -5,4 +5,6 @@ export type GuidelineCheckRequestBody = {
 
 export type GuidelineCheckResponse = {
   guidelineCheckText: string;
+  model: string;
+  usedFallback: boolean;
 };

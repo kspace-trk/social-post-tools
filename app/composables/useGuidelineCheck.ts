@@ -1,49 +1,29 @@
 import type { GuidelineCheckRequestBody, GuidelineCheckResponse } from '~~/shared/types/api/guidelineCheck';
 
-interface UseGuidelineCheckReturn {
-  data: Readonly<Ref<GuidelineCheckResponse | null>>;
-  pending: Readonly<Ref<boolean>>;
-  error: Readonly<Ref<string | null>>;
-  checkGuideline: (requestBody: GuidelineCheckRequestBody) => Promise<GuidelineCheckResponse | null>;
-}
-
-export const useGuidelineCheck = (): UseGuidelineCheckReturn => {
-  const pending = ref(false);
+export const useGuidelineCheck = () => {
   const error = ref<string | null>(null);
   const data = ref<GuidelineCheckResponse | null>(null);
+  const { fallbackLogs, pending, fetchSSE } = useSSEFetch();
 
   const checkGuideline = async (requestBody: GuidelineCheckRequestBody): Promise<GuidelineCheckResponse | null> => {
-    try {
-      pending.value = true;
-      error.value = null;
-      data.value = null;
+    error.value = null;
+    data.value = null;
 
-      const response = await $fetch<GuidelineCheckResponse>('/api/guidelineCheck', {
-        method: 'POST',
-        body: requestBody,
-      });
+    await fetchSSE<GuidelineCheckResponse>({
+      url: '/api/guidelineCheck',
+      body: requestBody,
+      onResult: (result) => { data.value = result; },
+      onError: (message) => { error.value = message; },
+    });
 
-      data.value = response;
-      return response;
-    }
-    catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'ガイドラインチェック中にエラーが発生しました';
-      error.value = errorMessage;
-      console.error('useGuidelineCheck エラー:', err);
-      return null;
-    }
-    finally {
-      pending.value = false;
-    }
+    return data.value;
   };
 
   return {
-    // データ
     data: readonly(data),
-    pending: readonly(pending),
+    pending,
     error: readonly(error),
-
-    // メソッド
+    fallbackLogs,
     checkGuideline,
   };
 };

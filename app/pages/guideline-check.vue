@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { data, pending, checkGuideline } = useGuidelineCheck();
+const { data, pending, fallbackLogs, checkGuideline } = useGuidelineCheck();
 const { config } = useConfig();
 
 const text = ref('');
@@ -23,6 +23,9 @@ const handleCheck = async (): Promise<void> => {
     result.value = response.guidelineCheckText;
   }
 };
+
+const modelInfo = computed(() => data.value?.model || '');
+const usedFallback = computed(() => data.value?.usedFallback || false);
 </script>
 
 <template>
@@ -42,11 +45,26 @@ const handleCheck = async (): Promise<void> => {
         />
       </div>
 
+      <div v-if="fallbackLogs.length > 0" class="fallback-logs">
+        <p v-for="(log, i) in fallbackLogs" :key="i" class="fallback-log">
+          {{ log.from }} が混雑中... {{ log.to }} にフォールバック
+        </p>
+      </div>
+
       <KSTextareaField
         v-model="result"
         class="textarea-result"
         label="結果"
       />
+
+      <div v-if="modelInfo" class="model-info">
+        <p v-if="usedFallback" class="fallback-notice">
+          モデルが混雑していたため、別のモデルにフォールバックしました
+        </p>
+        <p class="model-name">
+          model: {{ modelInfo }}
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -77,7 +95,38 @@ const handleCheck = async (): Promise<void> => {
   margin-top: 28px;
 }
 
+.fallback-logs {
+  margin-top: 16px;
+  padding: 8px 12px;
+  background: #fff8f0;
+  border: 1px solid #f0d0a0;
+  border-radius: 6px;
+}
+
+.fallback-log {
+  font-size: 12px;
+  color: #e67e22;
+  margin: 4px 0;
+}
+
 .textarea-result {
   margin-top: 120px;
+}
+
+.model-info {
+  margin-top: 8px;
+  text-align: right;
+}
+
+.fallback-notice {
+  font-size: 12px;
+  color: #e67e22;
+  margin: 0;
+}
+
+.model-name {
+  font-size: 11px;
+  color: #999;
+  margin: 2px 0 0;
 }
 </style>

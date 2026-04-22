@@ -1,49 +1,29 @@
 import type { TranslateRequestBody, TranslateResponse } from '~~/shared/types/api/translate';
 
-interface UseTranslateReturn {
-  data: Readonly<Ref<TranslateResponse | null>>;
-  pending: Readonly<Ref<boolean>>;
-  error: Readonly<Ref<string | null>>;
-  translateText: (requestBody: TranslateRequestBody) => Promise<TranslateResponse | null>;
-}
-
-export const useTranslate = (): UseTranslateReturn => {
-  const pending = ref(false);
+export const useTranslate = () => {
   const error = ref<string | null>(null);
   const data = ref<TranslateResponse | null>(null);
+  const { fallbackLogs, pending, fetchSSE } = useSSEFetch();
 
   const translateText = async (requestBody: TranslateRequestBody): Promise<TranslateResponse | null> => {
-    try {
-      pending.value = true;
-      error.value = null;
-      data.value = null;
+    error.value = null;
+    data.value = null;
 
-      const response = await $fetch<TranslateResponse>('/api/translate', {
-        method: 'POST',
-        body: requestBody,
-      });
+    await fetchSSE<TranslateResponse>({
+      url: '/api/translate',
+      body: requestBody,
+      onResult: (result) => { data.value = result; },
+      onError: (message) => { error.value = message; },
+    });
 
-      data.value = response;
-      return response;
-    }
-    catch (err) {
-      const errorMessage = err instanceof Error ? err.message : '翻訳中にエラーが発生しました';
-      error.value = errorMessage;
-      console.error('useTranslate エラー:', err);
-      return null;
-    }
-    finally {
-      pending.value = false;
-    }
+    return data.value;
   };
 
   return {
-    // データ
     data: readonly(data),
-    pending: readonly(pending),
+    pending,
     error: readonly(error),
-
-    // メソッド
+    fallbackLogs,
     translateText,
   };
 };

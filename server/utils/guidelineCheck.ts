@@ -6,7 +6,10 @@ import type { GuidelineCheckRequestBody, GuidelineCheckResponse } from '~~/share
  * @param requestBody - チェックするテキストとルールが含まれるリクエストボディ
  * @returns ガイドラインチェック結果のテキスト
  */
-export const checkGuideline = async (requestBody: GuidelineCheckRequestBody): Promise<GuidelineCheckResponse> => {
+export const checkGuideline = async (
+  requestBody: GuidelineCheckRequestBody,
+  onFallback?: (from: string, to: string) => void,
+): Promise<GuidelineCheckResponse> => {
   const { text, rules } = requestBody;
 
   try {
@@ -25,12 +28,15 @@ export const checkGuideline = async (requestBody: GuidelineCheckRequestBody): Pr
     const userPrompt = `以下のテキストをガイドラインに照らし合わせてチェックしてください:\n\n${text}`;
 
     // AI APIでのガイドラインチェック
-    const guidelineCheckText = await generateTextWithAI(systemPrompt, userPrompt, {
+    const result = await generateTextWithAI(systemPrompt, userPrompt, {
       maxTokens: 5000,
+      onFallback,
     });
 
     return {
-      guidelineCheckText,
+      guidelineCheckText: result.text,
+      model: result.model,
+      usedFallback: result.usedFallback,
     };
   }
   catch (error) {

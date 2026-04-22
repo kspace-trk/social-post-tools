@@ -1,16 +1,28 @@
 import OpenAI from 'openai';
 
-// OpenAI クライアントの初期化
+// OpenRouter クライアントの初期化
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  baseURL: 'https://openrouter.ai/api/v1',
+  apiKey: process.env.OPENROUTER_API_KEY,
 });
 
+const MODELS = [
+  'openai/gpt-oss-120b:free',
+  'openai/gpt-oss-20b:free',
+];
+
+export type AIResult = {
+  text: string;
+  model: string;
+  usedFallback: boolean;
+};
+
 /**
- * OpenAI APIを使用してテキストを生成する関数
+ * OpenRouter APIを使用してテキストを生成する関数
  * @param systemPrompt - システムプロンプト
  * @param userPrompt - ユーザープロンプト
  * @param options - 生成オプション
- * @returns 生成されたテキスト
+ * @returns 生成されたテキストとモデル情報
  */
 export const generateTextWithAI = async (
   systemPrompt: string,
@@ -19,48 +31,70 @@ export const generateTextWithAI = async (
     model?: string;
     maxTokens?: number;
     temperature?: number;
+    onFallback?: (from: string, to: string) => void;
   } = {},
-): Promise<string> => {
+): Promise<AIResult> => {
   const {
-    model = 'gpt-5.4',
+    model,
     maxTokens = 500,
     temperature = 1,
+    onFallback,
   } = options;
 
-  try {
-    const response = await openai.chat.completions.create({
-      model,
-      messages: [
-        {
-          role: 'system',
-          content: systemPrompt,
-        },
-        {
-          role: 'user',
-          content: userPrompt,
-        },
-      ],
-      max_completion_tokens: maxTokens,
-      temperature,
-    });
+  const messages: OpenAI.ChatCompletionMessageParam[] = [
+    { role: 'system', content: systemPrompt },
+    { role: 'user', content: userPrompt },
+  ];
 
-    const generatedText = response.choices[0]?.message?.content;
+  const params = { max_completion_tokens: maxTokens, temperature };
+  const modelsToTry = model ? [model] : MODELS;
 
-    if (!generatedText) {
-      console.error('AI応答の詳細:', {
-        choices: response.choices,
-        usage: response.usage,
-        model: response.model,
-      });
-      throw new Error(`テキストの生成に失敗しました。レスポンス: ${JSON.stringify(response.choices)}`);
+  for (let i = 0; i < modelsToTry.length; i++) {
+    try {
+      const currentModel = modelsToTry[i]!;
+      const text = await callCompletion(currentModel, messages, params);
+      return { text, model: currentModel, usedFallback: i > 0 };
     }
+    catch (error) {
+      const isLast = i === modelsToTry.length - 1;
+      if (!isLast && error instanceof OpenAI.APIError && error.status === 429) {
+        const from = modelsToTry[i]!;
+        const to = modelsToTry[i + 1]!;
+        console.warn(`${from} が429エラー。次のモデルへ: ${to}`);
+        onFallback?.(from, to);
+        continue;
+      }
+      console.error('AI生成エラー:', error);
+      throw new Error(`AI生成中にエラーが発生しました: ${error instanceof Error ? error.message : '不明なエラー'}`);
+    }
+  }
 
-    return generatedText.trim();
+  throw new Error('全てのモデルで生成に失敗しました');
+};
+
+const callCompletion = async (
+  model: string,
+  messages: OpenAI.ChatCompletionMessageParam[],
+  params: { max_completion_tokens: number; temperature: number },
+): Promise<string> => {
+  const response = await openai.chat.completions.create({
+    model,
+    messages,
+    ...params,
+  });
+
+  const generatedText = response.choices[0]?.message?.content;
+
+  if (!generatedText) {
+    console.error('AI応答の詳細:', {
+      choices: response.choices,
+      usage: response.usage,
+      model: response.model,
+    });
+    throw new Error(`テキストの生成に失敗しました。レスポンス: ${JSON.stringify(response.choices)}`);
   }
-  catch (error) {
-    console.error('AI生成エラー:', error);
-    throw new Error(`AI生成中にエラーが発生しました: ${error instanceof Error ? error.message : '不明なエラー'}`);
-  }
+
+  return generatedText.trim();
 };
 
 /**

@@ -6,7 +6,10 @@ import type { TranslateRequestBody, TranslateResponse } from '~~/shared/types/ap
  * @param requestBody - 翻訳する日本語テキストとルールが含まれるリクエストボディ
  * @returns 英語に翻訳されたテキスト
  */
-export const translateText = async (requestBody: TranslateRequestBody): Promise<TranslateResponse> => {
+export const translateText = async (
+  requestBody: TranslateRequestBody,
+  onFallback?: (from: string, to: string) => void,
+): Promise<TranslateResponse> => {
   const { text, rules } = requestBody;
   try {
     // システムプロンプトの作成（日本語→英語専用）
@@ -26,12 +29,15 @@ export const translateText = async (requestBody: TranslateRequestBody): Promise<
     const userPrompt = `ルールに従って、この文章を英語にしてください。:\n\n${text}`;
 
     // AI APIでの翻訳
-    const translatedText = await generateTextWithAI(systemPrompt, userPrompt, {
+    const result = await generateTextWithAI(systemPrompt, userPrompt, {
       maxTokens: 2000,
+      onFallback,
     });
 
     return {
-      translatedText,
+      translatedText: result.text,
+      model: result.model,
+      usedFallback: result.usedFallback,
     };
   }
   catch (error) {

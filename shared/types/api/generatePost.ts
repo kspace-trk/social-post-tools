@@ -5,4 +5,6 @@ export type GeneratePostRequestBody = {
 
 export type GeneratePostResponse = {
   post: string;
+  model: string;
+  usedFallback: boolean;
 };

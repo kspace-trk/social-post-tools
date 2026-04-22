@@ -1,15 +1,30 @@
 import { z } from 'zod';
-import type { GeneratePostResponse } from '~~/shared/types/api/generatePost';
 import { generatePost } from '~~/server/utils/ post';
 
-export default defineEventHandler(async (event): Promise<GeneratePostResponse> => {
+export default defineEventHandler(async (event) => {
   const bodySchema = z.object({
     requirements: z.string().min(1, '要件は必須です'),
     referencePosts: z.array(z.string()).optional().default([]),
   });
 
-  const { requirements, referencePosts } = await readValidatedBody(event, bodySchema.parse);
-  const generatedPost = await generatePost({ requirements, referencePosts });
+  const body = await readValidatedBody(event, bodySchema.parse);
+  const stream = createEventStream(event);
 
-  return generatedPost;
+  (async () => {
+    try {
+      const result = await generatePost(body, (from, to) => {
+        stream.push({ event: 'fallback', data: JSON.stringify({ from, to }) });
+      });
+      await stream.push({ event: 'result', data: JSON.stringify(result) });
+    }
+    catch (err) {
+      const message = err instanceof Error ? err.message : '不明なエラー';
+      await stream.push({ event: 'error', data: JSON.stringify({ message }) });
+    }
+    finally {
+      await stream.close();
+    }
+  })();
+
+  return stream.send();
 });

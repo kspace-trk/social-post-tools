@@ -6,7 +6,10 @@ import { generateTextWithAI, createSystemPromptWithReferences } from './ai';
  * @param requestBody - 要求内容と参考投稿が含まれるリクエストボディ
  * @returns 生成された投稿内容
  */
-export const generatePost = async (requestBody: GeneratePostRequestBody): Promise<GeneratePostResponse> => {
+export const generatePost = async (
+  requestBody: GeneratePostRequestBody,
+  onFallback?: (from: string, to: string) => void,
+): Promise<GeneratePostResponse> => {
   const { requirements, referencePosts } = requestBody;
 
   try {
@@ -17,12 +20,15 @@ export const generatePost = async (requestBody: GeneratePostRequestBody): Promis
     const userPrompt = `以下の要求に基づいて投稿文を生成してください:\n\n${requirements}`;
 
     // AI APIでの投稿生成
-    const generatedPost = await generateTextWithAI(systemPrompt, userPrompt, {
+    const result = await generateTextWithAI(systemPrompt, userPrompt, {
       maxTokens: 4000,
+      onFallback,
     });
 
     return {
-      post: generatedPost,
+      post: result.text,
+      model: result.model,
+      usedFallback: result.usedFallback,
     };
   }
   catch (error) {

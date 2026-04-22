@@ -5,4 +5,6 @@ export type TranslateRequestBody = {
 
 export type TranslateResponse = {
   translatedText: string;
+  model: string;
+  usedFallback: boolean;
 };
